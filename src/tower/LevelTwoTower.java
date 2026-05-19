@@ -1,22 +1,34 @@
 package tower;
 
 import Model.Base.Tower;
+import ui.StdDraw;
 
 public class LevelTwoTower extends Tower {
-    public LevelTwoTower(double x, double y){};
+    private double towerX;
+    private double towerY;
 
-    @Override
-    public void upgrade() {
-
+    public LevelTwoTower(double x, double y) {
+        this.towerX = x;
+        this.towerY = y;
+        this.level = 2;
+        this.buildCost = 100;
+        this.upgradeCost = 500; // Level 3'e geçiş ücreti
     }
 
     @Override
-    public int getUpgradeCost() {
-        return 0;
-    }
+    public void upgrade() {}
 
     @Override
-    public int getLevel() {
-        return 0;
+    public int getBuildCost() { return buildCost; }
+
+    @Override
+    public int getUpgradeCost() { return upgradeCost; }
+
+    @Override
+    public int getLevel() { return level; }
+
+    @Override
+    public void Draw() {
+        StdDraw.picture(towerX, towerY, "Assets/level_two_tower.png", 0.15, 0.15);
     }
 }

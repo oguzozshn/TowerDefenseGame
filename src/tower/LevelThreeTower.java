@@ -1,22 +1,34 @@
 package tower;
 
 import Model.Base.Tower;
+import ui.StdDraw;
 
 public class LevelThreeTower extends Tower {
-    public LevelThreeTower(double x, double y){};
+    private double towerX;
+    private double towerY;
 
-    @Override
-    public void upgrade() {
-
+    public LevelThreeTower(double x, double y) {
+        this.towerX = x;
+        this.towerY = y;
+        this.level = 3;
+        this.buildCost = 100;
+        this.upgradeCost = 0; // Son seviye, geliştirme yok
     }
 
     @Override
-    public int getUpgradeCost() {
-        return 0;
-    }
+    public void upgrade() {}
 
     @Override
-    public int getLevel() {
-        return 0;
+    public int getBuildCost() { return buildCost; }
+
+    @Override
+    public int getUpgradeCost() { return upgradeCost; }
+
+    @Override
+    public int getLevel() { return level; }
+
+    @Override
+    public void Draw() {
+        StdDraw.picture(towerX, towerY, "Assets/level_three_tower.png", 0.15, 0.15);
     }
 }
