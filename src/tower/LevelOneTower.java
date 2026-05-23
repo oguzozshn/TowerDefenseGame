@@ -1,9 +1,10 @@
 package tower;
 
+import Model.Base.IUpgradable;
 import Model.Base.Tower;
 import ui.StdDraw;
 
-public class LevelOneTower extends Tower {
+public class LevelOneTower extends Tower implements IUpgradable {
     public LevelOneTower(double x, double y){
         this.towerX = x;
         this.towerY = y;
@@ -14,11 +15,14 @@ public class LevelOneTower extends Tower {
         // Seviye 1 İstatistikleri
         this.damage = 10;
         this.range = 220;    // 0.22 Yarıçap menzil
-        this.fireRate = 15;  // 30 FPS hızda saniyede 2 kez ateş eder
+        this.fireRate = 20;  // 30 FPS hızda saniyede 2 kez ateş eder
     }
 
     @Override
-    public void upgrade() {}
+    public Tower upgrade() {
+        // Kendini yok edip yerine bir adet LevelTwoTower doğuruyor!
+        return new LevelTwoTower(this.towerX, this.towerY);
+    }
 
     @Override
     public int getBuildCost() { return buildCost; }

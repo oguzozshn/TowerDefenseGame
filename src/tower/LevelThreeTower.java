@@ -7,18 +7,12 @@ public class LevelThreeTower extends Tower {
     public LevelThreeTower(double x, double y) {
         this.towerX = x;
         this.towerY = y;
-        this.level = 3;
-        this.buildCost = 100;
-        this.upgradeCost = 0;
-
-        // Seviye 3 İstatistikleri (Muazzam Güç)
-        this.damage = 65;
-        this.range = 320;
-        this.fireRate = 8;
+        this.level = 3;       // 🌟 DÜZELTİLDİ: Seviye 3 olmalı
+        this.damage = 50;      // 🌟 Tavsiye: Son seviye hasarı daha yüksek olmalı (Örn: 50)
+        this.range = 350;      // 🌟 Tavsiye: Menzil biraz daha geniş olmalı
+        this.fireRate = 15;    // 🌟 Tavsiye: Daha hızlı ateş etmeli
+        this.upgradeCost = 0;  // Son seviye olduğu için upgrade maliyeti kalmadı
     }
-
-    @Override
-    public void upgrade() {}
 
     @Override
     public int getBuildCost() { return buildCost; }

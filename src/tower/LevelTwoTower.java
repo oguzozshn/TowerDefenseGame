@@ -1,24 +1,25 @@
 package tower;
 
+import Model.Base.IUpgradable;
 import Model.Base.Tower;
 import ui.StdDraw;
 
-public class LevelTwoTower extends Tower {
+public class LevelTwoTower extends Tower implements IUpgradable {
     public LevelTwoTower(double x, double y) {
         this.towerX = x;
         this.towerY = y;
         this.level = 2;
-        this.buildCost = 100;
-        this.upgradeCost = 500;
-
-        // Seviye 2 İstatistikleri
         this.damage = 25;
-        this.range = 260;    // Menzil arttı
-        this.fireRate = 12;  // Daha hızlı ateş eder
+        this.range = 300;
+        this.fireRate = 20;
+        this.upgradeCost = 500;
     }
 
     @Override
-    public void upgrade() {}
+    public Tower upgrade() {
+        // 🌟 DÜZELTİLDİ: Level 2 yükseldiğinde artık bir LevelThreeTower doğurmalı!
+        return new LevelThreeTower(this.towerX, this.towerY);
+    }
 
     @Override
     public int getBuildCost() { return buildCost; }

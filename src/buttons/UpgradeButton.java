@@ -15,6 +15,7 @@ public class UpgradeButton {
         this.buttonWidth = width;
         this.buttonHeight = height;
         this.upgradeCost = cost;
+
     }
 
     public void draw() {

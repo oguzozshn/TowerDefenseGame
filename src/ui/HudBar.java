@@ -5,19 +5,15 @@ import java.awt.Font;
 public class HudBar {
     private int elapsedSeconds = 0;
     private int gold;
-    private int currentWave;
-    private int totalWaves;
     private int baseHealth;
 
     // StdDraw koordinatları: bar ekranın en altında (y=0 ile y=0.075 arası)
     private static final double BAR_Y      = 0.0375;  // merkez
     private static final double BAR_HEIGHT = 0.075;
 
-    public HudBar(int startGold, int totalWaves) {
+    public HudBar(int startGold, int baseHealth) {
         this.gold       = startGold;
-        this.totalWaves = totalWaves;
-        this.currentWave = 1;
-        this.baseHealth = 10;
+        this.baseHealth = baseHealth;
     }
 
     // Her saniyede bir GameLoop'tan çağrılır
@@ -30,8 +26,7 @@ public class HudBar {
         return this.gold;
     }
 
-    public void setGold(int gold)           { this.gold = gold; }
-    public void setCurrentWave(int wave)    { this.currentWave = wave; }
+    public void setGold(int gold) { this.gold = gold; }
 
     public int getBaseHealth() { return baseHealth; }
     public void setBaseHealth(int health) { this.baseHealth = health; }
@@ -65,18 +60,14 @@ public class HudBar {
         StdDraw.setFont(new Font("Arial", Font.BOLD, 11));
         StdDraw.text(0.31, BAR_Y + 0.018, "BASE HP");
 
+
+        String baseHealthStr = String.format("%02d", baseHealth);
         StdDraw.setPenColor(new java.awt.Color(239, 68, 68)); // Canlı Kırmızı
         StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
-        StdDraw.text(0.31, BAR_Y - 0.010, baseHealth + " \u2764"); // Kalp Simgesi
+        StdDraw.text(0.31, BAR_Y - 0.010, baseHealthStr); // Kalp Simgesi
 
         // ── WAVE (orta) ─────────────────────────────────────
-        StdDraw.setPenColor(new java.awt.Color(156, 163, 175));
-        StdDraw.setFont(new Font("Arial", Font.BOLD, 11));
-        StdDraw.text(0.5, BAR_Y + 0.018, "WAVE");
 
-        StdDraw.setPenColor(new java.awt.Color(249, 250, 251));
-        StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
-        StdDraw.text(0.5, BAR_Y - 0.010, currentWave + " / " + totalWaves);
 
         // ── GOLD (sağ) ──────────────────────────────────────
         StdDraw.setPenColor(new java.awt.Color(156, 163, 175));

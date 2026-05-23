@@ -53,17 +53,21 @@ public class GameRender {
             return;
         }
 
-        // Slot butonlarını ve kuleleri çiz
+        // 🌟 GÜNCELLENEN KISIM: Slot butonlarını ve kuleleri çiz
         for (int i = 0; i < towerSlots.size(); i++) {
-            if (slotBuilt[i] && builtTowers.get(i) != null) {
-                Tower tower = builtTowers.get(i);
-                tower.Draw();
-                tower.drawLaser(); // Lazer çizimi
+            Tower tower = builtTowers.get(i);
 
+            // Artık slotBuilt dizisine bakmıyoruz, sadece "Kule nesnesi var mı?" kontrolü yetiyor
+            if (tower != null) {
+                tower.Draw();      // Kulenin kendi görselini çizer
+                tower.drawLaser(); // Varsa lazer efektini çizer
+
+                // Eğer kule son seviye değilse ve upgrade butonu tanımlıysa çiz
                 if (tower.getLevel() < 3 && upgradeButtons[i] != null) {
                     upgradeButtons[i].draw();
                 }
             } else {
+                // Eğer o slotta kule yoksa (null ise) build butonunu çiz
                 buildButtons.get(i).draw();
             }
         }

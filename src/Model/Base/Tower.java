@@ -16,7 +16,7 @@ public abstract class Tower {
     protected int fireRate;    // Kaç karede (frame) bir ateş edeceği süresi
     protected int attackCooldown = 0; // Kalan bekleme süresi kare sayısı
 
-    // 🌟 YENİ: Render aşamasına bilgi aktarmak için eklenen değişkenler
+    // Render aşamasına bilgi aktarmak için eklenen değişkenler
     private boolean isShooting = false;
     private double lastTargetX;
     private double lastTargetY;
@@ -25,11 +25,11 @@ public abstract class Tower {
     public abstract int getBuildCost();
     public abstract int getUpgradeCost();
     public abstract int getLevel();
-    public abstract void upgrade();
 
-    // Ateş etme mantığı ana döngüsü
-    public void updateAttack(List<Enemy> enemies) {
-        // 🌟 YENİ: Her kare başında ateş etme durumunu sıfırla
+
+    // 🌟 İSİM DEĞİŞTİ: updateAttack -> update (Enemy.update ile senkronize oldu)
+    public void update(List<Enemy> enemies) {
+        // Her kare başında ateş etme durumunu sıfırla
         this.isShooting = false;
 
         if (attackCooldown > 0) {
@@ -41,7 +41,7 @@ public abstract class Tower {
             if (target != null) {
                 target.takeDamage(damage); // Hasar ver
 
-                // 🌟 GÜNCELLENDİ: Anlık çizmek yerine koordinatları hafızaya alıyoruz
+                // Koordinatları hafızaya alıyoruz
                 this.lastTargetX = target.getX();
                 this.lastTargetY = target.getY();
                 this.isShooting = true;
@@ -53,7 +53,7 @@ public abstract class Tower {
 
     // Menzildeki ilk canlı düşmanı bulma algoritması
     private Enemy findTarget(List<Enemy> enemies) {
-        double rangeRadius = this.range / 1000.0; // int değeri StdDraw koordinatına çevir (Örn: 250 -> 0.25)
+        double rangeRadius = this.range / 1000.0; // int değeri StdDraw koordinatına çevir
 
         for (Enemy e : enemies) {
             if (e.isDead() || e.isReachedCastle()) continue;
@@ -66,7 +66,7 @@ public abstract class Tower {
         return null;
     }
 
-    // 🌟 GÜNCELLENDİ: Artık public ve parametresiz. GameRender içinden çağrılacak.
+    // Kule ile düşman arasına anlık bir lazer çizgisi çizer
     public void drawLaser() {
         if (isShooting) {
             StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);

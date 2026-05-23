@@ -1,7 +1,7 @@
 package Model.Base;
 
 public interface IUpgradable {
-    void upgrade();
+    Tower upgrade();
     int getUpgradeCost();
     int getLevel();
 }
