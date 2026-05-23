@@ -4,15 +4,17 @@ import Model.Base.Tower;
 import ui.StdDraw;
 
 public class LevelTwoTower extends Tower {
-    private double towerX;
-    private double towerY;
-
     public LevelTwoTower(double x, double y) {
         this.towerX = x;
         this.towerY = y;
         this.level = 2;
         this.buildCost = 100;
-        this.upgradeCost = 500; // Level 3'e geçiş ücreti
+        this.upgradeCost = 500;
+
+        // Seviye 2 İstatistikleri
+        this.damage = 25;
+        this.range = 260;    // Menzil arttı
+        this.fireRate = 12;  // Daha hızlı ateş eder
     }
 
     @Override
@@ -20,10 +22,8 @@ public class LevelTwoTower extends Tower {
 
     @Override
     public int getBuildCost() { return buildCost; }
-
     @Override
     public int getUpgradeCost() { return upgradeCost; }
-
     @Override
     public int getLevel() { return level; }
 

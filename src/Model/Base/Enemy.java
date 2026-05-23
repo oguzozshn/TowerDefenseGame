@@ -10,18 +10,26 @@ public abstract class Enemy {
     protected int currentWaypointIndex = 0;
     protected boolean reachedCastle = false;
     protected String texturePath;
-    protected int health;
 
-    public Enemy(double x, double y, double speed, String texturePath, int health) {
+    // YENİ SAVAŞ DEĞİŞKENLERİ
+    protected int hp;
+    protected int maxHp;
+    protected int goldReward;
+    protected int baseDamage;
+
+    public Enemy(double x, double y, double speed, String texturePath, int hp, int goldReward, int baseDamage) {
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.texturePath = texturePath;
-        this.health = health;
+        this.hp = hp;
+        this.maxHp = hp;
+        this.goldReward = goldReward;
+        this.baseDamage = 10;
     }
 
     public void update(List<double[]> waypoints) {
-        if (reachedCastle || currentWaypointIndex >= waypoints.size()) {
+        if (reachedCastle || isDead() || currentWaypointIndex >= waypoints.size()) {
             return;
         }
 
@@ -48,11 +56,34 @@ public abstract class Enemy {
     }
 
     public void Draw() {
-        // Her düşman kendi texturePath'indeki görseli çizer
+        if (isDead()) return;
+
+        // Düşman görseli
         StdDraw.picture(x, y, texturePath, 0.08, 0.08);
+
+        // YENİ: Küçük bir Can Barı çizimi (Görsel geri bildirim için)
+        double barWidth = 0.05;
+        double barHeight = 0.008;
+        double hpRatio = (double) hp / maxHp;
+
+        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.filledRectangle(x, y + 0.05, barWidth / 2, barHeight / 2);
+        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.filledRectangle(x - (barWidth * (1 - hpRatio)) / 2, y + 0.05, (barWidth * hpRatio) / 2, barHeight / 2);
     }
 
-    public int getHealth() { return health; }
+    // Savaş mekaniği yardımcı metotları
+    public void takeDamage(int amount) {
+        this.hp -= amount;
+    }
 
+    public boolean isDead() {
+        return this.hp <= 0;
+    }
+
+    public int getBaseDamage() { return baseDamage; }
+    public double getX() { return x; }
+    public double getY() { return y; }
+    public int getGoldReward() { return goldReward; }
     public boolean isReachedCastle() { return reachedCastle; }
 }

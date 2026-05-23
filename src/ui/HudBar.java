@@ -7,6 +7,7 @@ public class HudBar {
     private int gold;
     private int currentWave;
     private int totalWaves;
+    private int baseHealth;
 
     // StdDraw koordinatları: bar ekranın en altında (y=0 ile y=0.075 arası)
     private static final double BAR_Y      = 0.0375;  // merkez
@@ -16,6 +17,7 @@ public class HudBar {
         this.gold       = startGold;
         this.totalWaves = totalWaves;
         this.currentWave = 1;
+        this.baseHealth = 10;
     }
 
     // Her saniyede bir GameLoop'tan çağrılır
@@ -30,6 +32,9 @@ public class HudBar {
 
     public void setGold(int gold)           { this.gold = gold; }
     public void setCurrentWave(int wave)    { this.currentWave = wave; }
+
+    public int getBaseHealth() { return baseHealth; }
+    public void setBaseHealth(int health) { this.baseHealth = health; }
 
     public void draw() {
         // Arka plan
@@ -54,6 +59,15 @@ public class HudBar {
         StdDraw.setPenColor(new java.awt.Color(249, 250, 251));     // değer rengi
         StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
         StdDraw.text(0.12, BAR_Y - 0.010, timeStr);
+
+        // ── YENİ: HP (Sol - Orta Boşluk) ──────────────────────
+        StdDraw.setPenColor(new java.awt.Color(156, 163, 175));
+        StdDraw.setFont(new Font("Arial", Font.BOLD, 11));
+        StdDraw.text(0.31, BAR_Y + 0.018, "BASE HP");
+
+        StdDraw.setPenColor(new java.awt.Color(239, 68, 68)); // Canlı Kırmızı
+        StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
+        StdDraw.text(0.31, BAR_Y - 0.010, baseHealth + " \u2764"); // Kalp Simgesi
 
         // ── WAVE (orta) ─────────────────────────────────────
         StdDraw.setPenColor(new java.awt.Color(156, 163, 175));

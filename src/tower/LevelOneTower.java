@@ -4,37 +4,28 @@ import Model.Base.Tower;
 import ui.StdDraw;
 
 public class LevelOneTower extends Tower {
-    private double towerX;
-    private double towerY;
-    private int buildCost;
-
     public LevelOneTower(double x, double y){
         this.towerX = x;
         this.towerY = y;
         this.level = 1;
         this.buildCost = 100;
         this.upgradeCost = 300;
+
+        // Seviye 1 İstatistikleri
+        this.damage = 10;
+        this.range = 220;    // 0.22 Yarıçap menzil
+        this.fireRate = 15;  // 30 FPS hızda saniyede 2 kez ateş eder
     }
 
     @Override
-    public void upgrade() {
-        // Level 1 -> Level 2 geçişi TowerManager'dan yapılacak
-    }
+    public void upgrade() {}
 
     @Override
-    public int getBuildCost() {
-        return buildCost;
-    }
-
+    public int getBuildCost() { return buildCost; }
     @Override
-    public int getUpgradeCost() {
-        return upgradeCost;
-    }
-
+    public int getUpgradeCost() { return upgradeCost; }
     @Override
-    public int getLevel() {
-        return level;
-    }
+    public int getLevel() { return level; }
 
     @Override
     public void Draw() {
