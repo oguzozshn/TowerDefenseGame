@@ -62,7 +62,7 @@ public class SimulationManager {
         this.buttons = new ArrayList<>();
 
         for (double[] slot : towerSlots) {
-            buttons.add(new buttons.BuildButton(slot[0], slot[1] - 0.06, 0.06, 0.04, 100));
+            buttons.add(new buttons.BuildButton(slot[0], slot[1] - 0.06, 0.06, 0.03, 100));
             builtTowers.add(null);
         }
 
@@ -168,30 +168,30 @@ public class SimulationManager {
 
                 if (currentTower == null) {
                     if (currentButton != null && currentButton.isClicked(mouseX, mouseY) && currentGold >= 100) {
-                        hudBar.setGold(currentGold - 100);
-                        builtTowers.set(i, new LevelOneTower(slot[0], slot[1]));
-                        buttons.set(i, new UpgradeButton(slot[0], slot[1] - 0.06, 0.06, 0.03, 300));
-                        break;
+                            hudBar.setGold(currentGold - 100);
+                            Tower newTower = new LevelOneTower(slot[0], slot[1]);
+                            builtTowers.set(i, newTower);
+                            buttons.set(i, new UpgradeButton(slot[0], slot[1] - 0.06, 0.06, 0.03, newTower.getUpgradeCost()));
+                            break;
+                        }
                     }
-                }
                 else if (currentButton != null && currentTower instanceof Model.Base.IUpgradable upgradableTower) {
 
                     if (upgradableTower.getLevel() < 3 && currentButton.isClicked(mouseX, mouseY)) {
                         int cost = upgradableTower.getUpgradeCost();
 
-                        if (currentGold >= cost) {
-                            hudBar.setGold(currentGold - cost);
+                            if (currentGold >= cost) {
+                                hudBar.setGold(currentGold - cost);
 
-                            Tower upgradedTower = upgradableTower.upgrade();
-                            builtTowers.set(i, upgradedTower);
+                                Tower upgradedTower = upgradableTower.upgrade();
+                                builtTowers.set(i, upgradedTower);
 
-                            if (upgradedTower.getLevel() == 2) {
-                                buttons.set(i, new UpgradeButton(slot[0], slot[1] - 0.06, 0.06, 0.03, 500));
+                                if (upgradedTower.getLevel() == 3) {
+                                    buttons.set(i, null);
+                                } else {
+                                    buttons.set(i, new UpgradeButton(slot[0], slot[1] - 0.06, 0.06, 0.03, upgradedTower.getUpgradeCost()));
+                                }
                             }
-                            else if (upgradedTower.getLevel() == 3) {
-                                buttons.set(i, null);
-                            }
-                        }
                         break;
                     }
                 }

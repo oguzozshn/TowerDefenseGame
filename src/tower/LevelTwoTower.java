@@ -12,10 +12,10 @@ public class LevelTwoTower extends Tower implements IUpgradable {
         this.towerX = x;
         this.towerY = y;
         this.level = 2;
-        this.damage = 25;
+        this.damage = 20;
         this.range = 300;
         this.fireRate = 20;
-        this.upgradeCost = 500;
+        this.upgradeCost = 300;
     }
 
     /**

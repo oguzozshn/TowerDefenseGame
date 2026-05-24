@@ -13,7 +13,7 @@ public class LevelOneTower extends Tower implements IUpgradable {
         this.towerY = y;
         this.level = 1;
         this.buildCost = 100;
-        this.upgradeCost = 300;
+        this.upgradeCost = 200;
 
         this.damage = 10;
         this.range = 220;

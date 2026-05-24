@@ -21,12 +21,13 @@ public class BuildButton extends Button {
     /**
      * Draws the build button on the screen.
      */
+
     @Override
-    public void draw(){
+    public void draw() {
         StdDraw.setPenColor(StdDraw.DARK_GRAY);
         StdDraw.filledRectangle(x, y, width, height);
 
-        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.setPenRadius(0.002);
         StdDraw.rectangle(x, y, width, height);
 

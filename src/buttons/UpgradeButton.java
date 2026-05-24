@@ -19,7 +19,6 @@ public class UpgradeButton extends Button {
      * @param cost   The cost required to upgrade.
      */
     public UpgradeButton(double x, double y, double width, double height, int cost) {
-        // 🌟 KRİTİK ADIM: Değerleri doğrudan üst sınıfın (Button) constructor'ına gönderiyoruz
         super(x, y, width, height);
         this.upgradeCost = cost;
     }

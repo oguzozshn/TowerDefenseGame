@@ -2,7 +2,7 @@ package ui;
 
 import Model.Base.Tower;
 import Model.Base.Enemy;
-import Model.Base.Button; // Üst sınıfımız
+import Model.Base.Button;
 import java.util.List;
 
 /**

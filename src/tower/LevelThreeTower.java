@@ -11,7 +11,7 @@ public class LevelThreeTower extends Tower {
         this.towerX = x;
         this.towerY = y;
         this.level = 3;
-        this.damage = 50;
+        this.damage = 30;
         this.range = 350;
         this.fireRate = 15;
         this.upgradeCost = 0;

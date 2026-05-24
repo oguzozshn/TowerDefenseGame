@@ -3,7 +3,7 @@ import core.GameLoop;
 /**
  * Main entry point for the game application.
  */
-public class Main {
+public class OguzBerenOzsahin {
    /**
     * Initializes and starts the game loop.
     *
