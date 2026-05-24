@@ -8,7 +8,7 @@ import ui.StdDraw;
 public class GameLoop {
     private SimulationManager simulationManager;
     private boolean isRunning = true;
-    private static final int FPS        = 30;
+    private static final int FPS = 30;
     private static final int FRAME_TIME = 1000 / FPS;
     private long lastSecondTime = System.currentTimeMillis();
 
@@ -22,12 +22,6 @@ public class GameLoop {
             simulationManager.update();
 
             simulationManager.render();
-
-            long now = System.currentTimeMillis();
-            if (now - lastSecondTime >= 1000) {
-                simulationManager.getHudBar().tick();
-                lastSecondTime = now;
-            }
 
             StdDraw.pause(FRAME_TIME);
         }

@@ -1,7 +1,7 @@
 package ui;
 
 /**
- * Represents the game over screen that is displayed when the player loses.
+ * Represents the game over a screen that is displayed when the player loses.
  */
 public class GameOverScreen {
     private HudBar hudBar;
@@ -30,7 +30,6 @@ public class GameOverScreen {
         StdDraw.text(0.5, 0.45, "Your castle is destoyed. Defence failed!");
 
         StdDraw.text(0.5, 0.38, "Your Score");
-
         String score = String.valueOf(hudBar.getScore());
         StdDraw.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 24));
         StdDraw.text(0.5, 0.32, score);

@@ -13,11 +13,10 @@ public abstract class Enemy {
     protected int currentWaypointIndex = 0;
     protected boolean reachedCastle = false;
     protected String texturePath;
-
     protected int hp;
     protected int maxHp;
     protected int goldReward;
-    protected int baseDamage;
+    protected int damage;
     protected int score;
 
     /**
@@ -31,7 +30,7 @@ public abstract class Enemy {
      * @param goldReward  The amount of gold rewarded upon defeating the enemy.
      * @param score       The score granted upon defeating the enemy.
      */
-    public Enemy(double x, double y, double speed, String texturePath, int hp, int goldReward, int score) {
+    public Enemy(double x, double y, double speed, String texturePath, int hp, int goldReward, int damage,int score) {
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -39,7 +38,7 @@ public abstract class Enemy {
         this.hp = hp;
         this.maxHp = hp;
         this.goldReward = goldReward;
-        this.baseDamage = 10;
+        this.damage = damage;
         this.score = score;
     }
 
@@ -113,7 +112,7 @@ public abstract class Enemy {
      * Getter for base damage.
      * @return The base damage of the enemy.
      */
-    public int getBaseDamage() { return baseDamage; }
+    public int getBaseDamage() { return damage; }
 
     /**
      * Getter for enemy's X position.

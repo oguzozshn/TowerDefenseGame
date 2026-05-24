@@ -7,7 +7,6 @@ import Model.Base.Tower;
 import Model.Base.Enemy;
 import tower.*;
 import enemy.*;
-import buttons.BuildButton;
 import buttons.UpgradeButton;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class SimulationManager {
     private boolean isGameOver = false;
     private boolean wasMousePressed = false;
     private final long startTime = System.currentTimeMillis();
-    private final int startGold = 20000;
+    private final int startGold = 100;
     private int score = 0;
     private final int INITIAL_SPAWN_INTERVAL = 45;
     private final int MIN_SPAWN_INTERVAL = 5;
@@ -79,6 +78,9 @@ public class SimulationManager {
             return;
         }
 
+        int currentSeconds = (int) ((System.currentTimeMillis() - startTime) / 1000);
+        hudBar.setElapsedSeconds(currentSeconds);
+
         handleMouseInput();
         spawnEnemies();
         updateEnemies();
@@ -100,9 +102,12 @@ public class SimulationManager {
             double startY = pathWaypoints.get(0)[1];
             double random = Math.random();
 
-            if (random > 0.8 && timeElapsed > 60000)      enemies.add(new Vampyr(startX, startY));
-            else if (random > 0.5 && timeElapsed > 30000) enemies.add(new Golem(startX, startY));
-            else                                          enemies.add(new Goblin(startX, startY));
+            if (random > 0.8 && timeElapsed > 60000)
+                enemies.add(new Vampyr(startX, startY));
+            else if (random > 0.5 && timeElapsed > 30000)
+                enemies.add(new Golem(startX, startY));
+            else
+                enemies.add(new Goblin(startX, startY));
 
             spawnCooldown = 0;
         }
@@ -162,7 +167,6 @@ public class SimulationManager {
                 Model.Base.Button currentButton = buttons.get(i);
 
                 if (currentTower == null) {
-                    // Slot boşsa kule inşa etme mantığı
                     if (currentButton != null && currentButton.isClicked(mouseX, mouseY) && currentGold >= 100) {
                         hudBar.setGold(currentGold - 100);
                         builtTowers.set(i, new LevelOneTower(slot[0], slot[1]));
@@ -170,19 +174,14 @@ public class SimulationManager {
                         break;
                     }
                 }
-                // 🌟 INTERFACE & POLİMORFİZM SİHRİ:
-                // Önce "Bu kule geliştirilebilir bir kule mi?" diye soruyoruz.
-                // Java 14+ Pattern Matching sayesinde cast işlemi (upgradableTower) otomatik yapılıyor.
                 else if (currentButton != null && currentTower instanceof Model.Base.IUpgradable upgradableTower) {
 
-                    // Artık kuleye ait özellikleri doğrudan interface sözleşmesinden güvenle çekiyoruz
                     if (upgradableTower.getLevel() < 3 && currentButton.isClicked(mouseX, mouseY)) {
                         int cost = upgradableTower.getUpgradeCost();
 
                         if (currentGold >= cost) {
                             hudBar.setGold(currentGold - cost);
 
-                            // Yükseltme işlemini yine interface üzerinden tetikliyoruz
                             Tower upgradedTower = upgradableTower.upgrade();
                             builtTowers.set(i, upgradedTower);
 
@@ -190,8 +189,6 @@ public class SimulationManager {
                                 buttons.set(i, new UpgradeButton(slot[0], slot[1] - 0.06, 0.06, 0.03, 500));
                             }
                             else if (upgradedTower.getLevel() == 3) {
-                                // Seviye 3 kuleler IUpgradable implement etmeyeceği için bir sonraki tıklamada
-                                // bu 'else if' bloğuna hiç girmeyecek. Butonu da kaldırarak ekranı temizliyoruz.
                                 buttons.set(i, null);
                             }
                         }

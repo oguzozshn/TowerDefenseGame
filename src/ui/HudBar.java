@@ -27,10 +27,11 @@ public class HudBar {
     public void setScore(int score) { this.score = score; }
 
     /**
-     * Increments the elapsed time by one second.
+     * Sets the elapsed time in seconds.
+     * @param seconds
      */
-    public void tick() {
-        elapsedSeconds++;
+    public void setElapsedSeconds(int seconds) {
+        this.elapsedSeconds = seconds;
     }
 
     /**
@@ -91,6 +92,10 @@ public class HudBar {
         StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
         StdDraw.text(0.31, BAR_Y - 0.010, baseHealthStr);
 
+        StdDraw.setPenColor(new java.awt.Color(156, 163, 175));
+        StdDraw.setFont(new Font("Arial", Font.BOLD, 11));
+        StdDraw.text(0.55, BAR_Y + 0.018, "SCORE");
+
         String score = String.format("%02d", getScore());
         StdDraw.setPenColor(new java.awt.Color(239, 68, 68));
         StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
@@ -100,8 +105,9 @@ public class HudBar {
         StdDraw.setFont(new Font("Arial", Font.BOLD, 11));
         StdDraw.text(0.88, BAR_Y + 0.018, "GOLD");
 
+        String goldStr = String.format("%02d", gold);
         StdDraw.setPenColor(new java.awt.Color(251, 191, 36));
         StdDraw.setFont(new Font("Arial", Font.BOLD, 20));
-        StdDraw.text(0.88, BAR_Y - 0.010, gold + " \u2726");
+        StdDraw.text(0.88, BAR_Y - 0.010, goldStr);
     }
 }
