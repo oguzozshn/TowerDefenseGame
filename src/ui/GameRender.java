@@ -2,9 +2,7 @@ package ui;
 
 import Model.Base.Tower;
 import Model.Base.Enemy;
-import tower.*;
-import buttons.*;
-import java.util.ArrayList;
+import Model.Base.Button; // Üst sınıfımız
 import java.util.List;
 
 /**
@@ -17,38 +15,23 @@ public class GameRender {
     private GameOverScreen gameOverScreen;
     private List<Tower> builtTowers;
     private List<Enemy> enemies;
-    private List<double[]> pathWaypoints;
     private List<double[]> towerSlots;
-    private List<BuildButton> buildButtons;
-    private UpgradeButton[] upgradeButtons;
-    private boolean[] slotBuilt;
+    private final List<Button> buttons;
     private boolean isGameOver = false;
 
     /**
      * Constructor for GameRender.
-     * @param builtTowers
-     * @param enemies
-     * @param hudBar
-     * @param pathWaypoints
-     * @param towerSlots
-     * @param slotBuilt
-     * @param buildButtons
-     * @param upgradeButtons
      */
     public GameRender(List<Tower> builtTowers, List<Enemy> enemies, HudBar hudBar,
-                      List<double[]> pathWaypoints, List<double[]> towerSlots,
-                      boolean[] slotBuilt, List<BuildButton> buildButtons, UpgradeButton[] upgradeButtons) {
+                      List<double[]> towerSlots, List<Button> buttons) {
         StdDraw.setCanvasSize(canvas_width, canvas_height);
         StdDraw.enableDoubleBuffering();
 
         this.builtTowers = builtTowers;
         this.enemies = enemies;
         this.hudBar = hudBar;
-        this.pathWaypoints = pathWaypoints;
         this.towerSlots = towerSlots;
-        this.slotBuilt = slotBuilt;
-        this.buildButtons = buildButtons;
-        this.upgradeButtons = upgradeButtons;
+        this.buttons = buttons;
         this.gameOverScreen = new GameOverScreen(this.hudBar);
     }
 
@@ -59,39 +42,48 @@ public class GameRender {
         StdDraw.picture(0.5, 0.5, "Assets/BackPlan.png", 1.0, 1.0);
 
         if (isGameOver) {
-            GameOverScreen gameOverScreen = new GameOverScreen(this.hudBar);
-            gameOverScreen.Draw();
+            this.gameOverScreen.Draw();
             return;
         }
 
-        for (int i = 0; i < towerSlots.size(); i++) {
-            Tower tower = builtTowers.get(i);
-
-            if (tower != null) {
-                tower.Draw();
-                tower.drawLaser();
-
-                if (tower.getLevel() < 3 && upgradeButtons[i] != null) {
-                    upgradeButtons[i].draw();
-                }
-            } else {
-                buildButtons.get(i).draw();
-            }
-        }
-        for (Enemy e : enemies) {
-            e.Draw();
-        }
-
+        drawTowers();
+        drawEnemies();
         hudBar.draw();
         StdDraw.show();
     }
 
     /**
      * Sets the game over flag.
-     * @param gameOver
      */
     public void setGameOver(boolean gameOver) {
         this.isGameOver = gameOver;
     }
 
+    /**
+     * Draws the enemies on the screen.
+     */
+    public void drawEnemies(){
+        for (Enemy e : enemies) {
+            e.Draw();
+        }
+    }
+
+    /**
+     * Draws the towers and their buttons on the screen.
+     */
+    public void drawTowers(){
+        for (int i = 0; i < towerSlots.size(); i++) {
+            Tower tower = builtTowers.get(i);
+
+            if (tower != null) {
+                tower.Draw();
+                tower.drawLaser();
+            }
+
+            Button activeButton = buttons.get(i);
+            if (activeButton != null) {
+                activeButton.draw();
+            }
+        }
+    }
 }

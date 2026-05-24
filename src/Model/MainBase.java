@@ -1,26 +1,48 @@
 package Model;
 
+/**
+ * Represents the main base in the game, with health and methods to interact with it.
+ */
 public class MainBase {
     private int health = 50;
 
-    // 🌟 DÜZELTME: SimulationManager'da "new MainBase()" dendiği için parametresiz constructor ekledik
-    public MainBase() {
-        this.health = 50; // Varsayılan başlangıç canı
-    }
+    /**
+     * Constructor for MainBase.
+     */
+    public MainBase() {}
 
+    /**
+     * Constructor for MainBase with initial health.
+     * @param health Initial health of the main base.
+     */
     public MainBase(int health) {
         this.health = health;
     }
 
+    /**
+     * Getter and setter methods for health.
+     * @return The current health of the main base.
+     */
     public int getHealth() { return health; }
+
+    /**
+     * Sets the health of the main base.
+     * @param health
+     */
     public void setHealth(int health) { this.health = health; }
 
-    // 🌟 GERÇEKLENEN KISIM: Kale hasar aldığında canı gerçekten düşürelim
+    /**
+     * Takes damage from the player.
+     * @param damage
+     */
     public void takeDamage(int damage) {
         this.health -= damage;
     }
 
-    // 🌟 GERÇEKLENEN KISIM: Can sıfıra veya altına indiyse yıkıldı (true) dön
+    /**
+     * Checks if the main base is destroyed.
+     * @return True if health is less than or equal to 0, false otherwise.
+     */
     public boolean isDestroyed() {
         return this.health <= 0;
     }
