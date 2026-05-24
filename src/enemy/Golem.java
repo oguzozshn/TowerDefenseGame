@@ -2,6 +2,9 @@ package enemy;
 
 import Model.Base.Enemy;
 
+/**
+ * Represents a Golem enemy in the game.
+ */
 public class Golem extends Enemy {
     public Golem(double x, double y) {
         // En sondaki '3', kaleye ulaştığında 3 can götüreceği anlamına gelir

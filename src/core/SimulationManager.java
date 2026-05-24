@@ -12,32 +12,35 @@ import buttons.UpgradeButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the simulation aspects of the game, including updating game state and rendering.
+ */
 public class SimulationManager {
-    private GameRender gameRender;
-    private HudBar hudBar;
-    private MainBase mainBase;
-
-    private List<Tower> builtTowers;
-    private List<Enemy> enemies;
-    private List<double[]> towerSlots;
-    private List<double[]> pathWaypoints;
-    private List<BuildButton> buildButtons;
-    private UpgradeButton[] upgradeButtons;
-    private boolean[] slotBuilt;
-
+    private final GameRender gameRender;
+    private final HudBar hudBar;
+    private final MainBase mainBase;
+    private final List<Tower> builtTowers;
+    private final List<Enemy> enemies;
+    private final List<double[]> towerSlots;
+    private final List<double[]> pathWaypoints;
+    private final List<BuildButton> buildButtons;
+    private final UpgradeButton[] upgradeButtons;
+    private final boolean[] slotBuilt;
     private int spawnCooldown = 0;
     private boolean isGameOver = false;
     private boolean wasMousePressed = false;
-    private long startTime = System.currentTimeMillis();
-    private int startGold = 20000;
+    private final long startTime = System.currentTimeMillis();
+    private final int startGold = 20000;
+    private int score = 0;
+    private final int INITIAL_SPAWN_INTERVAL = 45;
+    private final int MIN_SPAWN_INTERVAL = 5;
 
-    // 🌟 YENİ: Spawn hızı sınırları
-    private final int INITIAL_SPAWN_INTERVAL = 45; // Oyun başındaki doğma süresi (kare)
-    private final int MIN_SPAWN_INTERVAL = 5;     // Düşmanların gelebileceği maksimum çılgın hız sınırı
-
+    /**
+     * Initializes the simulation manager with default values and sets up initial game state.
+     */
     public SimulationManager() {
         this.mainBase = new MainBase();
-        this.hudBar = new HudBar(startGold, mainBase.getHealth());
+        this.hudBar = new HudBar(startGold, mainBase.getHealth(), score);
         this.builtTowers = new ArrayList<>();
         this.enemies = new ArrayList<>();
         this.towerSlots = List.of(
@@ -63,7 +66,7 @@ public class SimulationManager {
         this.buildButtons = new ArrayList<>();
 
         for (double[] slot : towerSlots) {
-            buildButtons.add(new BuildButton(slot[0], slot[1] - 0.06, 0.06, 0.04));
+            buildButtons.add(new BuildButton(slot[0], slot[1] - 0.06, 0.06, 0.04, 100));
             builtTowers.add(null);
         }
 
@@ -71,7 +74,9 @@ public class SimulationManager {
                 pathWaypoints, towerSlots, slotBuilt, buildButtons, upgradeButtons);
     }
 
-    // 🌟 YENİ VE TEMİZ UPDATE: Kule döngüsündeki slotBuilt kalabalığı gitti
+    /**
+     * Updates the simulation state, handles user input, and manages enemy spawning.
+     */
     public void update() {
         if (isGameOver) {
             gameRender.setGameOver(true);
@@ -80,7 +85,6 @@ public class SimulationManager {
 
         handleMouseInput();
 
-        // Düşman Doğma Mekanizması (Dinamik)
         long timeElapsed = System.currentTimeMillis() - startTime;
         int currentSpawnInterval = Math.max(MIN_SPAWN_INTERVAL, INITIAL_SPAWN_INTERVAL - (int)(timeElapsed / 10000) * 4);
         spawnCooldown++;
@@ -97,7 +101,6 @@ public class SimulationManager {
             spawnCooldown = 0;
         }
 
-        // Düşmanları güncelle
         for (int i = enemies.size() - 1; i >= 0; i--) {
             Enemy e = enemies.get(i);
             e.update(pathWaypoints);
@@ -105,6 +108,8 @@ public class SimulationManager {
             if (e.isDead()) {
                 hudBar.setGold(hudBar.getGold() + e.getGoldReward());
                 enemies.remove(i);
+                score += e.getScore();
+                hudBar.setScore(score);
                 continue;
             }
 
@@ -114,20 +119,21 @@ public class SimulationManager {
                 enemies.remove(i);
 
                 if (mainBase.isDestroyed()) isGameOver = true;
-                continue;
             }
         }
 
-        // 🌟 Kulelerin saldırısını güncelle (Sadece kule varsa update et diyoruz, gerisine karışmıyoruz)
         for (Tower tower : builtTowers) {
             if (tower != null) {
-                tower.update(enemies); // İsmi updateAttack yerine update yaptık
+                tower.update(enemies);
             }
         }
 
         gameRender.setGameOver(isGameOver);
     }
 
+    /**
+     * Handles user mouse input for tower placement and upgrades.
+     */
     private void handleMouseInput() {
         boolean isMousePressed = ui.StdDraw.isMousePressed();
 
@@ -140,7 +146,6 @@ public class SimulationManager {
                 double[] slot = towerSlots.get(i);
                 Tower currentTower = builtTowers.get(i);
 
-                // Slot boşsa ve build butonuna tıklandıysa
                 if (currentTower == null) {
                     if (buildButtons.get(i).isClicked(mouseX, mouseY) && currentGold >= 100) {
                         hudBar.setGold(currentGold - 100);
@@ -149,27 +154,18 @@ public class SimulationManager {
                         break;
                     }
                 }
-                // Slot doluysa ve upgrade butonuna tıklandıysa
-                // Slot doluysa ve upgrade butonuna tıklandıysa
-                // Slot doluysa ve upgrade butonuna tıklandıysa
                 else if (currentTower.getLevel() < 3 && upgradeButtons[i] != null) {
                     if (upgradeButtons[i].isClicked(mouseX, mouseY)) {
 
-                        // 🌟 SİHİRLİ DOKUNUŞ: Java'ya soruyoruz:
-                        // "Evet bu bir Tower ama, acaba arkada IUpgradable yeteneğine de sahip mi?"
                         if (currentTower instanceof Model.Base.IUpgradable) {
 
                             int cost = currentTower.getUpgradeCost();
                             if (currentGold >= cost) {
                                 hudBar.setGold(currentGold - cost);
 
-                                // 🌟 TİP DÖNÜŞÜMÜ (CASTING):
-                                // Java'ya diyoruz ki: "Ben garanti ediyorum, bu kule upgrade edilebilir.
-                                // Şimdi onu geçici olarak IUpgradable tipine dönüştür ve upgrade() metodunu çağır."
                                 Tower upgradedTower = ((Model.Base.IUpgradable) currentTower).upgrade();
                                 builtTowers.set(i, upgradedTower);
 
-                                // KONTROLÜ YENİ KULEYE GÖRE YAPIYORUZ:
                                 if (upgradedTower.getLevel() == 2) {
                                     upgradeButtons[i] = new UpgradeButton(slot[0], slot[1] - 0.06, 0.06, 0.03, 500);
                                 }
@@ -186,11 +182,16 @@ public class SimulationManager {
         wasMousePressed = isMousePressed;
     }
 
+    /**
+     * Renders the game state, including towers, enemies, and UI elements.
+     */
     public void render() {
         gameRender.render();
     }
 
-    public List<Tower> getBuiltTowers() { return builtTowers; }
-    public List<Enemy> getEnemies() { return enemies; }
+    /**
+     * Returns the hudBar of the game.
+     * @return HudBar
+     */
     public HudBar getHudBar() { return hudBar; }
 }

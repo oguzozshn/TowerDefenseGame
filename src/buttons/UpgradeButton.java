@@ -2,6 +2,9 @@ package buttons;
 
 import ui.StdDraw;
 
+/**
+ * Represents an upgrade button in the game.
+ */
 public class UpgradeButton {
     double buttonX;
     double buttonY;
@@ -18,17 +21,17 @@ public class UpgradeButton {
 
     }
 
+    /**
+     * Draws the upgrade button on the screen.
+     */
     public void draw() {
-        // Buton arka planı
         StdDraw.setPenColor(StdDraw.DARK_GRAY);
         StdDraw.filledRectangle(buttonX, buttonY, buttonWidth, buttonHeight);
 
-        // Buton kenarı
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.setPenRadius(0.002);
         StdDraw.rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
 
-        // "UPGRADE" yazısı
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
         StdDraw.text(buttonX, buttonY + 0.01, "UPGRADE");
@@ -40,9 +43,5 @@ public class UpgradeButton {
                 mouseX <= buttonX + buttonWidth &&
                 mouseY >= buttonY - buttonHeight &&
                 mouseY <= buttonY + buttonHeight;
-    }
-
-    public int getUpgradeCost() {
-        return upgradeCost;
     }
 }

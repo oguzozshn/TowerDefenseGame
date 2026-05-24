@@ -2,27 +2,27 @@ package core;
 
 import ui.StdDraw;
 
+/**
+ * Manages the main game loop, handling simulation updates and rendering.
+ */
 public class GameLoop {
     private SimulationManager simulationManager;
     private boolean isRunning = true;
-
     private static final int FPS        = 30;
     private static final int FRAME_TIME = 1000 / FPS;
-
     private long lastSecondTime = System.currentTimeMillis();
 
+    /**
+     * Initializes the game loop and starts the main game loop.
+     */
     public GameLoop() {
-        // SimulationManager'ı oluştur
         this.simulationManager = new SimulationManager();
 
         while (isRunning) {
-            // Oyun mantığını güncelle
             simulationManager.update();
-            
-            // Renderla
+
             simulationManager.render();
 
-            // Her geçen gerçek saniyede tick()
             long now = System.currentTimeMillis();
             if (now - lastSecondTime >= 1000) {
                 simulationManager.getHudBar().tick();
